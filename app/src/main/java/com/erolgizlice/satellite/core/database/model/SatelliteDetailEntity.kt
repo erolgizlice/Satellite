@@ -19,5 +19,6 @@ fun SatelliteDetailEntity.asExternalModel() = SatelliteDetail(
     costPerLaunch = costPerLaunch,
     firstFlight = firstFlight,
     height = height,
-    mass = mass
+    mass = mass,
+    position = ""
 )

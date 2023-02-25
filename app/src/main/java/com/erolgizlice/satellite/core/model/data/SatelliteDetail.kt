@@ -7,7 +7,8 @@ data class SatelliteDetail(
     val costPerLaunch: Int,
     val firstFlight: String,
     val height: Int,
-    val mass: Int
+    val mass: Int,
+    val position: String
 )
 
 fun SatelliteDetail.asEntityModel() = SatelliteDetailEntity(

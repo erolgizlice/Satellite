@@ -1,6 +1,7 @@
 package com.erolgizlice.satellite.core.network
 
 import JvmUnitTestAssetManager
+import com.erolgizlice.satellite.core.network.model.NetworkPositionContainer
 import com.erolgizlice.satellite.core.network.model.NetworkSatellite
 import com.erolgizlice.satellite.core.network.model.NetworkSatelliteDetail
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,5 +33,10 @@ class NetworkDataSource @Inject constructor(
     override suspend fun getSatelliteDetailList(): List<NetworkSatelliteDetail> =
         withContext(ioDispatcher) {
             assets.open(SATELLITE_DETAIL_ASSET).use(networkJson::decodeFromStream)
+        }
+
+    override suspend fun getSatellitePosition(): NetworkPositionContainer =
+        withContext(ioDispatcher) {
+            assets.open(POSITIONS_ASSET).use(networkJson::decodeFromStream)
         }
 }

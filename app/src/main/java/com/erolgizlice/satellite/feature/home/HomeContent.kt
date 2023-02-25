@@ -19,7 +19,7 @@ import com.erolgizlice.satellite.core.model.data.Satellite
 @Composable
 fun HomeContent(
     satelliteList: List<Satellite>,
-    onSatelliteClick: (Int) -> Unit,
+    onSatelliteClick: (Int, String) -> Unit,
     modifier: Modifier,
     searchState: SearchState = rememberSearchState()
 ) {
@@ -54,7 +54,7 @@ fun HomeContent(
 fun ShowSatellites(
     modifier: Modifier,
     satelliteList: List<Satellite>,
-    onSatelliteClick: (Int) -> Unit
+    onSatelliteClick: (Int, String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -69,7 +69,7 @@ fun ShowSatellites(
                 SatelliteItem(
                     name = satellite.name,
                     isActive = satellite.active,
-                    onSatelliteClick = { onSatelliteClick(satellite.id) }
+                    onSatelliteClick = { onSatelliteClick(satellite.id, satellite.name) }
                 )
             }
 

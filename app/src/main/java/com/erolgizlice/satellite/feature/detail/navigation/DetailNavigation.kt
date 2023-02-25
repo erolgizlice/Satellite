@@ -9,9 +9,10 @@ const val detailRoute = "detail_route"
 fun NavController.navigateToDetail(
     navOptions: NavOptions? = null,
     satelliteId: Int = -1,
+    satelliteName: String = ""
 ) {
     this.navigate(
-        "$detailRoute?satelliteId=$satelliteId",
+        "$detailRoute?satelliteId=$satelliteId&satelliteName=$satelliteName",
         navOptions
     )
 }
@@ -20,13 +21,19 @@ fun NavGraphBuilder.detailScreen(
     onBackClick: () -> Unit
 ) {
     composable(
-        route = "$detailRoute?satelliteId={satelliteId}",
+        route = "$detailRoute?satelliteId={satelliteId}&satelliteName={satelliteName}",
         arguments = listOf(
             navArgument(
                 name = "satelliteId"
             ) {
                 type = NavType.IntType
                 defaultValue = -1
+            },
+            navArgument(
+                name = "satelliteName"
+            ) {
+                type = NavType.StringType
+                defaultValue = ""
             }
         )
     ) {

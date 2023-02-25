@@ -8,7 +8,9 @@ import com.erolgizlice.satellite.core.model.data.asEntityModel
 import com.erolgizlice.satellite.core.network.Dispatcher
 import com.erolgizlice.satellite.core.network.NetworkDataSource
 import com.erolgizlice.satellite.core.network.SatelliteDispatchers
+import com.erolgizlice.satellite.core.network.model.NetworkPosition
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -46,10 +48,27 @@ class SatelliteRepository @Inject constructor(
                 costPerLaunch = it.costPerLaunch,
                 firstFlight = it.firstFlight,
                 height = it.height,
-                mass = it.mass
+                mass = it.mass,
+                position = ""
             )
         }.first()
             .also {
                 satelliteDao.insertSatelliteDetailEntity(it.asEntityModel())
             }
+
+    override fun getSatellitePosition(satelliteId: Int): Flow<String> = flow {
+        var index = 0
+        var positions: List<NetworkPosition>
+        while (true) {
+            emit(
+                datasource.getSatellitePosition().list
+                    .first { it.id == satelliteId.toString() }
+                    .apply { positions = this.positions }
+                    .positions[index]
+                    .let { "${it.posX}, ${it.posY}" }
+            )
+            index = (index + 1) % positions.size
+            delay(3000)
+        }
+    }.flowOn(ioDispatcher)
 }

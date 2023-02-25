@@ -19,15 +19,16 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val satelliteId = savedStateHandle.get<Int>("satelliteId")!!
+    val satelliteName = savedStateHandle.get<String>("satelliteName")!!
 
     val satelliteDetailUiState: StateFlow<SatelliteDetailUiState> =
-            getSatelliteDetailUseCase(satelliteId)
-                .map(SatelliteDetailUiState::Success)
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(5_000),
-                    initialValue = SatelliteDetailUiState.Loading,
-                )
+        getSatelliteDetailUseCase(satelliteId)
+            .map(SatelliteDetailUiState::Success)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = SatelliteDetailUiState.Loading,
+            )
 }
 
 sealed interface SatelliteDetailUiState {

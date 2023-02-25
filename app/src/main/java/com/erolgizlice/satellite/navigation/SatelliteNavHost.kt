@@ -21,8 +21,11 @@ fun SatelliteNavHost(
         modifier = modifier
     ) {
         homeGraph(
-            onSatelliteClick = { satelliteId ->
-                navController.navigateToDetail(satelliteId = satelliteId)
+            onSatelliteClick = { satelliteId, satelliteName ->
+                navController.navigateToDetail(
+                    satelliteId = satelliteId,
+                    satelliteName = satelliteName
+                )
             },
             nestedGraphs = {
                 detailScreen(

@@ -9,4 +9,6 @@ interface InterfaceSatelliteRepository {
     fun getSatelliteList(): Flow<List<Satellite>>
 
     fun getSatelliteDetail(satelliteId: Int): Flow<SatelliteDetail>
+
+    fun getSatellitePosition(satelliteId: Int): Flow<String>
 }

@@ -1,8 +1,13 @@
 package com.erolgizlice.satellite.feature.detail
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -14,6 +19,38 @@ fun DetailRoute(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.satelliteDetailUiState.collectAsStateWithLifecycle()
+    val name = viewModel.satelliteName
 
-    Text(text = uiState.toString())
+    DetailScreen(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        modifier = modifier,
+        name = name
+    )
+}
+
+@Composable
+fun DetailScreen(
+    uiState: SatelliteDetailUiState,
+    onBackClick: () -> Unit,
+    modifier: Modifier,
+    name: String
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        when (uiState) {
+            SatelliteDetailUiState.Loading -> CircularProgressIndicator()
+            is SatelliteDetailUiState.Success ->
+                DetailContent(
+                    satelliteDetail = uiState.satelliteDetail,
+                    onBackClick = onBackClick,
+                    modifier = modifier,
+                    name = name
+                )
+            SatelliteDetailUiState.Error -> Text(text = "Couldn't fetch data")
+        }
+    }
 }

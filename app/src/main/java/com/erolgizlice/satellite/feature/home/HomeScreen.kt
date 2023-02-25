@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 internal fun HomeRoute(
-    onSatelliteClick: (Int) -> Unit,
+    onSatelliteClick: (Int, String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -30,7 +30,7 @@ internal fun HomeRoute(
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-    onSatelliteClick: (Int) -> Unit,
+    onSatelliteClick: (Int, String) -> Unit,
     modifier: Modifier
 ) {
     Column(
