@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.erolgizlice.satellite.feature.detail.navigation.detailScreen
+import com.erolgizlice.satellite.feature.detail.navigation.navigateToDetail
 import com.erolgizlice.satellite.feature.home.navigation.homeGraph
 import com.erolgizlice.satellite.feature.home.navigation.homeGraphRoutePattern
 
@@ -20,10 +22,12 @@ fun SatelliteNavHost(
     ) {
         homeGraph(
             onSatelliteClick = { satelliteId ->
-//                TODO
+                navController.navigateToDetail(satelliteId = satelliteId)
             },
             nestedGraphs = {
-//                TODO
+                detailScreen(
+                    onBackClick = navController::popBackStack
+                )
             }
         )
     }
