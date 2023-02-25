@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,8 +16,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.erolgizlice.satellite.core.model.data.Satellite
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeContent(
     satelliteList: List<Satellite>,
@@ -26,12 +24,14 @@ fun HomeContent(
     searchState: SearchState = rememberSearchState()
 ) {
     LaunchedEffect(searchState.query.text) {
+        searchState.searching = true
         searchState.searchResults =
             if (searchState.query.text.length > 2)
                 satelliteList.filter {
                     it.name.contains(searchState.query.text, ignoreCase = true)
                 }
             else satelliteList
+        searchState.searching = false
     }
 
     Column(modifier = modifier) {
@@ -39,6 +39,7 @@ fun HomeContent(
             modifier = Modifier
                 .padding(16.dp),
             query = searchState.query,
+            searching = searchState.searching,
             onQueryChange = { searchState.query = it },
         )
         ShowSatellites(
@@ -85,6 +86,7 @@ fun ShowSatellites(
 private fun SearchBar(
     query: TextFieldValue,
     onQueryChange: (TextFieldValue) -> Unit,
+    searching: Boolean,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -114,11 +116,17 @@ private fun SearchBar(
                     .fillMaxSize()
                     .wrapContentHeight()
             ) {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = "search"
-                    )
+                if (searching) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "search"
+                        )
+                    }
                 }
                 BasicTextField(
                     value = query,
@@ -135,11 +143,13 @@ private fun SearchBar(
 @Composable
 private fun rememberSearchState(
     query: TextFieldValue = TextFieldValue(""),
+    searching: Boolean = false,
     searchResults: List<Satellite> = emptyList()
 ): SearchState {
     return remember {
         SearchState(
             query = query,
+            searching = searching,
             searchResults = searchResults
         )
     }
@@ -148,8 +158,10 @@ private fun rememberSearchState(
 @Stable
 class SearchState(
     query: TextFieldValue,
+    searching: Boolean,
     searchResults: List<Satellite>
 ) {
     var query by mutableStateOf(query)
+    var searching by mutableStateOf(searching)
     var searchResults by mutableStateOf(searchResults)
 }
