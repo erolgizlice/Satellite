@@ -8,7 +8,6 @@ import com.erolgizlice.satellite.core.model.data.asEntityModel
 import com.erolgizlice.satellite.core.network.Dispatcher
 import com.erolgizlice.satellite.core.network.NetworkDataSource
 import com.erolgizlice.satellite.core.network.SatelliteDispatchers
-import com.erolgizlice.satellite.core.network.model.NetworkPosition
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -58,13 +57,12 @@ class SatelliteRepository @Inject constructor(
 
     override fun getSatellitePosition(satelliteId: Int): Flow<String> = flow {
         var index = 0
-        var positions: List<NetworkPosition>
+        val positions = datasource.getSatellitePosition().list
+            .first { it.id == satelliteId.toString() }
+            .positions
         while (true) {
             emit(
-                datasource.getSatellitePosition().list
-                    .first { it.id == satelliteId.toString() }
-                    .apply { positions = this.positions }
-                    .positions[index]
+                positions[index]
                     .let { "${it.posX}, ${it.posY}" }
             )
             index = (index + 1) % positions.size
