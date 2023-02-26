@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -33,8 +35,8 @@ fun DetailRoute(
 fun DetailScreen(
     uiState: SatelliteDetailUiState,
     onBackClick: () -> Unit,
-    modifier: Modifier,
-    name: String
+    modifier: Modifier = Modifier,
+    name: String = ""
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -42,7 +44,9 @@ fun DetailScreen(
         verticalArrangement = Arrangement.Center
     ) {
         when (uiState) {
-            SatelliteDetailUiState.Loading -> CircularProgressIndicator()
+            SatelliteDetailUiState.Loading -> CircularProgressIndicator(
+                modifier = Modifier.semantics { contentDescription = "Loading detail" }
+            )
             is SatelliteDetailUiState.Success ->
                 DetailContent(
                     satelliteDetail = uiState.satelliteDetail,

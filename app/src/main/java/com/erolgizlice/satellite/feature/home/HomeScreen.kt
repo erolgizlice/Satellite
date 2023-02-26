@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
@@ -31,7 +33,7 @@ internal fun HomeRoute(
 fun HomeScreen(
     uiState: HomeUiState,
     onSatelliteClick: (Int, String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -39,7 +41,9 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center
     ) {
         when (uiState) {
-            HomeUiState.Loading -> CircularProgressIndicator()
+            HomeUiState.Loading -> CircularProgressIndicator(
+                modifier = Modifier.semantics { contentDescription = "Loading home" }
+            )
             is HomeUiState.Success ->
                 HomeContent(
                     satelliteList = uiState.satelliteList,

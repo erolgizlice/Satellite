@@ -34,7 +34,8 @@ fun DetailContent(
 
         Column(
             modifier = Modifier.align(Alignment.Center),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = name,

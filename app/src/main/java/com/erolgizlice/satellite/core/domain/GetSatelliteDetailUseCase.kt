@@ -1,13 +1,13 @@
 package com.erolgizlice.satellite.core.domain
 
-import com.erolgizlice.satellite.core.data.repository.SatelliteRepository
+import com.erolgizlice.satellite.core.data.repository.InterfaceSatelliteRepository
 import com.erolgizlice.satellite.core.model.data.SatelliteDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class GetSatelliteDetailUseCase @Inject constructor(
-    private val satelliteRepository: SatelliteRepository
+    private val satelliteRepository: InterfaceSatelliteRepository
 ) {
 
     operator fun invoke(satelliteId: Int): Flow<SatelliteDetail> =
